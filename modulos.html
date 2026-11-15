@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuaderno de Estudio - Ciencias Naturales</title>
+  <style>
+    :root {
+      --bg: #f4f8ff;
+      --panel: #ffffff;
+      --panel-soft: #eef5ff;
+      --primary: #3f7cff;
+      --primary-dark: #2e5ec8;
+      --primary-soft: #e9f0ff;
+      --success: #1ca76f;
+      --success-soft: #eafaf2;
+      --warning: #f6c453;
+      --warning-soft: #fff4d6;
+      --danger: #d84c5f;
+      --danger-soft: #ffe8ec;
+      --text: #21314c;
+      --muted: #627287;
+      --line: #dfe9f7;
+      --shadow: 0 16px 34px rgba(63, 124, 255, 0.09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background: linear-gradient(180deg, #f4f8ff 0%, #edf6ff 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+      padding: 18px 22px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      font-size: 22px;
+    }
+
+    .progress-box {
+      min-width: 280px;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      background: #e5edf9;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #73d4a7, #3f7cff);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #eef6ff 100%);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      padding: 34px 28px;
+      box-shadow: var(--shadow);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 16px 0 12px;
+      font-size: clamp(2rem, 3vw, 3.1rem);
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 0 auto 22px;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #557ef3 100%);
+      color: white;
+      box-shadow: 0 10px 18px rgba(63, 124, 255, 0.25);
+    }
+
+    .button.secondary {
+      background: var(--panel-soft);
+      color: var(--primary-dark);
+      border: 1px solid var(--line);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 18px;
+      margin: 30px 0 40px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .module-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .module-header {
+      padding: 18px 20px 12px;
+      background: linear-gradient(135deg, #edf5ff, #f4f8ff);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .module-header h2 {
+      margin: 8px 0 0;
+      font-size: 1.35rem;
+    }
+
+    .module-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      background: var(--primary-soft);
+      border-radius: 999px;
+      padding: 7px 10px;
+    }
+
+    .module-content {
+      padding: 20px;
+    }
+
+    .module-content ul {
+      margin: 0 0 18px;
+      padding-left: 20px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .important {
+      background: var(--success-soft);
+      border-left: 6px solid var(--success);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+
+    .fact {
+      background: var(--warning-soft);
+      border-left: 6px solid var(--warning);
+      padding: 14px 16px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+    }
+
+    .activity {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbfdff;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .activity h4 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .option {
+      flex: 1 1 180px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--text);
+      transition: all 0.15s ease;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .option.selected {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    .feedback {
+      margin-top: 12px;
+      min-height: 22px;
+      font-weight: 800;
+    }
+
+    .feedback.good { color: var(--success); }
+    .feedback.bad { color: var(--danger); }
+
+    .module-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .smallnote {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .cards, .grid { grid-template-columns: 1fr; }
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .progress-box { max-width: none; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">🔬</div>
+        <span>Cuaderno de Estudio</span>
+      </div>
+      <div class="progress-box">
+        <div class="progress-label">
+          <span>Avance del recorrido</span>
+          <strong id="progressText">0/7 módulos</strong>
+        </div>
+        <div class="progress-track" aria-label="Progreso del curso">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="tag">6° Básico</div>
+      <h1>Plataforma de estudio de Ciencias Naturales</h1>
+      <p class="lead">
+        Explora los principales temas de pubertad, reproducción, autocuidado y bienestar emocional.
+        Cada módulo está diseñado para ser claro, breve y útil para estudiar de forma autónoma.
+      </p>
+      <div class="cta-row">
+        <a href="#modulos" class="button primary">Ver módulos</a>
+        <a href="index.html" class="button secondary">Volver a inicio</a>
+      </div>
+    </section>
+
+    <section class="cards" aria-label="Resumen del curso">
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🧼</div>
+        <h3>Higiene corporal</h3>
+        <p>Aprende a cuidar tu cuerpo durante la pubertad y a mantener hábitos saludables en el día a día.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">🧬</div>
+        <h3>Sistemas reproductores</h3>
+        <p>Comprende la función del sistema masculino y femenino con explicaciones simples y concretas.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon" aria-hidden="true">💬</div>
+        <h3>Emociones y autocuidado</h3>
+        <p>Desarrolla herramientas para comprender tus emociones, tomar decisiones y protegerte.</p>
+      </article>
+    </section>
+
+    <section id="modulos" class="grid" aria-label="Módulos de estudio"></section>
+  </div>
+
+  <script>
+    const modules = [
+      {
+        id: 1,
+        title: 'Higiene corporal en la pubertad',
+        emoji: '🧼',
+        mainIdeas: [
+          'En la pubertad el cuerpo cambia y puede producir más sudor y olor corporal.',
+          'La higiene personal ayuda a sentirnos limpios, seguros y saludables.',
+          'Ducharse todos los días y secarse bien es fundamental.',
+          'Lavarse el cabello, la cara y el cuello ayuda a controlar la grasa y los gérmenes.',
+          'Usar ropa interior limpia y una toalla personal es una medida de autocuidado.',
+          'El desodorante ayuda a prevenir olores intensos en las axilas.',
+          'Cepillarse los dientes previene caries y mal aliento.'
+        ],
+        remember: [
+          'El cuidado personal es importante para sentirte bien y mantenerte sano.',
+          'Los cambios físicos de la pubertad son normales.',
+          'Pedir ayuda a una persona adulta de confianza también es parte del autocuidado.'
+        ],
+        fact: 'El sudor no huele mucho por sí solo; el olor aparece cuando las bacterias de la piel actúan sobre él.',
+        question: '¿Qué acción ayuda a controlar el olor corporal?',
+        options: ['Compartir la toalla con otra persona', 'Ducharse y usar ropa limpia', 'No lavarse la cara'],
+        answer: 1,
+        explanation: '¡Correcto! Ducharse y usar ropa limpia ayudan a evitar malos olores.'
+      },
+      {
+        id: 2,
+        title: 'Sistema reproductor masculino',
+        emoji: '🧬',
+        mainIdeas: [
+          'El sistema reproductor masculino produce espermatozoides y testosterona.',
+          'Los testículos son los órganos donde se producen estas células y hormonas.',
+          'El escroto protege a los testículos y les mantiene una temperatura adecuada.',
+          'El epidídimo almacena y madura los espermatozoides.',
+          'Los conductos deferentes transportan los espermatozoides.',
+          'Las vesículas seminales y la próstata producen líquidos del semen.',
+          'La uretra conduce la orina y el semen hacia el exterior.'
+        ],
+        remember: [
+          'Los testículos producen espermatozoides.',
+          'El epidídimo ayuda a que los espermatozoides maduren.',
+          'La uretra conecta la salida del semen y de la orina.'
+        ],
+        fact: 'Los testículos están fuera de la cavidad abdominal porque así pueden mantenerse a una temperatura ligeramente más baja, lo que favorece la producción de espermatozoides.',
+        question: '¿Dónde se producen los espermatozoides?',
+        options: ['En el útero', 'En los testículos', 'En la vagina'],
+        answer: 1,
+        explanation: '¡Correcto! Los espermatozoides se producen en los testículos.'
+      },
+      {
+        id: 3,
+        title: 'Sistema reproductor femenino',
+        emoji: '🌷',
+        mainIdeas: [
+          'El sistema reproductor femenino produce óvulos y permite la reproducción.',
+          'Los ovarios son los órganos donde se forman los óvulos.',
+          'Las trompas uterinas conectan los ovarios con el útero.',
+          'El útero es un órgano muscular hueco que puede albergar al embrión.',
+          'La vagina comunica el útero con el exterior.',
+          'Las hormonas regulan los cambios del cuerpo y la reproducción.'
+        ],
+        remember: [
+          'Los ovarios producen ovocitos.',
+          'El útero puede albergar al embrión durante el embarazo.',
+          'La vagina es el conducto de conexión con el exterior.'
+        ],
+        fact: 'El útero tiene paredes musculares y puede aumentar de tamaño durante el embarazo para alojar al bebé en desarrollo.',
+        question: '¿Qué órgano puede albergar al embrión?',
+        options: ['El ovario', 'El útero', 'La uretra'],
+        answer: 1,
+        explanation: '¡Correcto! El útero es el órgano donde se puede implantar y desarrollar el embrión.'
+      },
+      {
+        id: 4,
+        title: 'Desarrollo socioemocional y pubertad',
+        emoji: '💛',
+        mainIdeas: [
+          'La pubertad trae cambios físicos, emocionales y sociales.',
+          'Las emociones forman parte de la vida y son importantes de reconocer.',
+          'Hablar con respeto ayuda a resolver conflictos y a cuidarnos.',
+          'La empatía permite entender cómo se siente la otra persona.',
+          'La privacidad y la autonomía son importantes en esta etapa.',
+          'Pedir apoyo a adultos responsables es una decisión inteligente.'
+        ],
+        remember: [
+          'Las emociones son normales y válidas.',
+          'Comprenderlas ayuda a tomar mejores decisiones.',
+          'Hablar con respeto y pedir apoyo fortalece la confianza.'
+        ],
+        fact: 'Poner nombre a una emoción —como miedo, alegría o tristeza— ayuda a manejarla mejor y buscar apoyo si hace falta.',
+        question: '¿Qué es más útil cuando te sientes preocupado?',
+        options: ['Guardar todo en silencio', 'Hablar con una persona adulta de confianza', 'Burlarse de tu emoción'],
+        answer: 1,
+        explanation: '¡Correcto! Hablar con alguien de confianza ayuda a sentir apoyo y orientación.'
+      },
+      {
+        id: 5,
+        title: 'Características sexuales secundarias y sistemas reproductores',
+        emoji: '🌿',
+        mainIdeas: [
+          'Las características sexuales primarias son los órganos reproductores.',
+          'Las secundarias son cambios corporales que aparecen en la pubertad.',
+          'En niñas y niños aparecen cambios distintos y normales.',
+          'El vello axilar, púbico y el acné pueden aparecer en esta etapa.',
+          'La voz puede cambiar en los hombres y las mamas pueden desarrollarse en las mujeres.',
+          'Las hormonas ayudan a producir estos cambios.'
+        ],
+        remember: [
+          'Primarias = órganos reproductores.',
+          'Secundarias = cambios que aparecen en la pubertad.',
+          'Cada persona cambia a su propio ritmo.'
+        ],
+        fact: 'No todas las personas experimentan los cambios de la pubertad en el mismo momento. Cada cuerpo tiene su propio tiempo.',
+        question: '¿Cuál es un ejemplo de característica sexual secundaria?',
+        options: ['Útero', 'Cambio de voz', 'Próstata'],
+        answer: 1,
+        explanation: '¡Exacto! El cambio de voz es una característica sexual secundaria.'
+      },
+      {
+        id: 6,
+        title: 'Sexualidad y autocuidado digital',
+        emoji: '🔐',
+        mainIdeas: [
+          'La sexualidad incluye cuerpo, emociones, relaciones y respeto.',
+          'Es normal tener preguntas y buscar información segura.',
+          'No debes compartir datos personales o fotos íntimas con desconocidos.',
+          'Si una videollamada te incomoda, puedes terminarla y pedir ayuda.',
+          'No debes reunirte en secreto con alguien que conoces en internet.',
+          'Una relación sana se basa en respeto, confianza y consentimiento.'
+        ],
+        remember: [
+          'No compartas información personal en redes sociales.',
+          'Tus imágenes y tu cuerpo te pertenecen.',
+          'Si algo te preocupa, habla con un adulto de confianza.'
+        ],
+        fact: 'En redes sociales puede haber personas que fingen ser otra edad para ganarse la confianza. Por eso es importante cuidar la información personal.',
+        question: '¿Qué debes hacer si alguien te pide reunirte en secreto?',
+        options: ['Aceptar sin contar a nadie', 'Hablar con un adulto de confianza y no ir a solas', 'Enviar fotos personales primero'],
+        answer: 1,
+        explanation: '¡Correcto! Debes pedir apoyo y no ir a solas.'
+      },
+      {
+        id: 7,
+        title: 'Pubertad, menstruación, eyaculación y autocuidado sexual',
+        emoji: '🌈',
+        mainIdeas: [
+          'La pubertad incluye cambios físicos y emocionales.',
+          'La menstruación es un proceso natural que ocurre en las mujeres.',
+          'La eyaculación es la salida de semen por el pene.',
+          'Estos cambios no significan que una persona ya esté preparada para ser madre o padre.',
+          'Tomar decisiones sobre sexualidad requiere información, responsabilidad y respeto.',
+          'El consentimiento es esencial en toda relación.'
+        ],
+        remember: [
+          'La menstruación y la eyaculación son cambios normales en la pubertad.',
+          'La preparación emocional y la responsabilidad son distintas a la madurez corporal.',
+          'La sexualidad debe vivirse con respeto y cuidado.'
+        ],
+        fact: 'La madurez corporal y la preparación para una vida adulta no son lo mismo: ambas son importantes, pero no siempre se desarrollan al mismo tiempo.',
+        question: '¿Qué significa que una persona ha empezado a menstruar o a eyacular?',
+        options: ['Que ya está lista para ser madre o padre', 'Que su cuerpo está cambiando y madurando', 'Que ya debe tener relaciones sexuales'],
+        answer: 1,
+        explanation: '¡Correcto! Es una señal de maduración corporal, no de preparación total para la responsabilidad adulta.'
+      }
+    ];
+
+    const moduleContainer = document.getElementById('modulos');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const completed = new Set(JSON.parse(localStorage.getItem('modulosCienciasNaturales') || '[]'));
+
+    function renderModules() {
+      moduleContainer.innerHTML = '';
+      modules.forEach((module, index) => {
+        const article = document.createElement('article');
+        article.className = 'module-box';
+
+        const isDone = completed.has(module.id);
+
+        article.innerHTML = `
+          <div class="module-header">
+            <div class="module-meta">${module.emoji} Módulo ${module.id}</div>
+            <h2>${module.title}</h2>
+          </div>
+          <div class="module-content">
+            <ul>
+              ${module.mainIdeas.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+
+            <div class="important">
+              <strong>Lo más importante:</strong>
+              <ul>
+                ${module.remember.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="fact">
+              <strong>¿Sabías que...?</strong><br>
+              ${module.fact}
+            </div>
+
+            <div class="activity">
+              <h4>${module.question}</h4>
+              <div class="options">
+                ${module.options.map((option, optionIndex) => `
+                  <button class="option ${optionIndex === module.answer ? 'answer-good' : ''}" type="button" data-index="${optionIndex}">${option}</button>
+                `).join('')}
+              </div>
+              <div class="feedback" aria-live="polite"></div>
+            </div>
+
+            <div class="module-actions">
+              <button class="button primary" type="button" data-complete="${module.id}">${isDone ? '✓ Revisado' : 'Marcar como revisado'}</button>
+            </div>
+            <p class="smallnote">${isDone ? 'Este módulo ya fue revisado.' : 'Revisa el resumen y responde la actividad para consolidar el aprendizaje.'}</p>
+          </div>
+        `;
+
+        const options = article.querySelectorAll('.option');
+        const feedback = article.querySelector('.feedback');
+        const completeButton = article.querySelector('[data-complete]');
+
+        options.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            options.forEach(opt => opt.classList.remove('selected'));
+            btn.classList.add('selected');
+            const selectedIndex = Number(btn.getAttribute('data-index'));
+            if (selectedIndex === module.answer) {
+              feedback.textContent = module.explanation;
+              feedback.className = 'feedback good';
+            } else {
+              feedback.textContent = 'Revisa otra vez el resumen. La respuesta correcta es la que se relaciona con el concepto principal.';
+              feedback.className = 'feedback bad';
+            }
+          });
+        });
+
+        completeButton.addEventListener('click', () => {
+          completed.add(module.id);
+          localStorage.setItem('modulosCienciasNaturales', JSON.stringify([...completed]));
+          renderModules();
+          updateProgress();
+        });
+
+        moduleContainer.appendChild(article);
+      });
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const total = modules.length;
+      const current = completed.size;
+      const percent = Math.round((current / total) * 100);
+      progressText.textContent = `${current}/${total} módulos`;
+      progressFill.style.width = `${percent}%`;
+    }
+
+    renderModules();
+  </script>
+</body>
+</html>
