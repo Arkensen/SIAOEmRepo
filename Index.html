@@ -1,0 +1,486 @@
+Aquí tienes el código completo en HTML de una nueva evaluación de 15 preguntas con alternativas (3 por cada tema de la imagen), pensada para estudiantes de 12 años.
+Incluye un campo para ingresar el nombre del estudiante, cálculo de nota (escala chilena del 1.0 al 7.0 con 60% de exigencia), conteo de respuestas buenas y malas, y la corrección detallada mostrando cuál era la alternativa correcta en caso de error.
+
+Código HTML para copiar y guardar (evaluacion_biologia.html)
+
+html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluación de Ciencias Naturales - 6° Básico</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #eef2f6;
+      color: #1e293b;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 32px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    }
+    header {
+      text-align: center;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+    h1 {
+      color: #0f172a;
+      margin: 0 0 8px 0;
+      font-size: 1.7rem;
+    }
+    .subtitle {
+      color: #475569;
+      margin: 0;
+      font-size: 1rem;
+    }
+    .student-info {
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      margin-bottom: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      align-items: center;
+    }
+    .student-info label {
+      font-weight: bold;
+      color: #334155;
+    }
+    .student-info input {
+      flex: 1;
+      min-width: 220px;
+      padding: 10px 12px;
+      border: 1px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .topic-badge {
+      display: inline-block;
+      background-color: #dbeafe;
+      color: #1e40af;
+      font-size: 0.8rem;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .question-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 18px;
+      transition: border-color 0.2s;
+    }
+    .question-card:hover {
+      border-color: #60a5fa;
+    }
+    .question-text {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 14px;
+      color: #0f172a;
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .option-item:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+    .option-item input[type="radio"] {
+      margin-right: 12px;
+      transform: scale(1.2);
+      cursor: pointer;
+    }
+    .btn-primary {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background-color: #16a34a;
+      color: #ffffff;
+      font-size: 1.15rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 25px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover {
+      background-color: #15803d;
+    }
+    .btn-secondary {
+      display: none;
+      width: 100%;
+      padding: 14px;
+      background-color: #475569;
+      color: #ffffff;
+      font-size: 1.05rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .btn-secondary:hover {
+      background-color: #334155;
+    }
+    #resultsSection {
+      display: none;
+      margin-top: 30px;
+      padding-top: 25px;
+      border-top: 3px solid #cbd5e1;
+    }
+    .summary-card {
+      background: #f0f9ff;
+      border: 2px solid #7dd3fc;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .summary-card h2 {
+      margin: 0 0 10px 0;
+      color: #0369a1;
+    }
+    .stats-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    .stat-box {
+      background: #ffffff;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .stat-good { color: #16a34a; }
+    .stat-bad { color: #dc2626; }
+    .stat-grade { color: #2563eb; }
+    .review-item {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .review-correct {
+      background-color: #f0fdf4;
+      border-left: 6px solid #16a34a;
+      color: #14532d;
+    }
+    .review-incorrect {
+      background-color: #fef2f2;
+      border-left: 6px solid #dc2626;
+      color: #7f1d1d;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Evaluación de Ciencias Naturales</h1>
+    <p class="subtitle">Desarrollo Humano, Sistemas Reproductores y Gametos (Nivel 12 años)</p>
+  </header>
+
+  <div class="student-info">
+    <label for="studentName">Nombre del estudiante:</label>
+    <input type="text" id="studentName" placeholder="Escribe tu nombre y apellido aquí...">
+  </div>
+
+  <form id="examForm">
+    <div id="questionsList"></div>
+    <button type="button" class="btn-primary" id="btnFinish" onclick="terminarPrueba()">Terminar Prueba</button>
+    <button type="button" class="btn-secondary" id="btnRetry" onclick="reiniciarPrueba()">Volver a realizar la prueba</button>
+  </form>
+
+  <div id="resultsSection">
+    <div class="summary-card" id="summaryCard"></div>
+    <h3>Revisión detallada de respuestas:</h3>
+    <div id="reviewContainer"></div>
+  </div>
+</div>
+
+<script>
+  const bancoPreguntas = [
+    // Tema 1: Etapas biológicas del desarrollo humano
+    {
+      tema: "Etapas biológicas del desarrollo humano",
+      pregunta: "1. ¿En qué etapa del desarrollo humano ocurren los cambios físicos que preparan al cuerpo para poder tener hijos?",
+      alternativas: [
+        "A) En la vejez",
+        "B) En la pubertad y adolescencia",
+        "C) En la primera infancia",
+        "D) En la adultez mayor"
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Etapas biológicas del desarrollo humano",
+      pregunta: "2. ¿Qué característica define principalmente a la etapa de la adultez?",
+      alternativas: [
+        "A) El cuerpo alcanza su madurez física completa y máxima capacidad para asumir responsabilidades.",
+        "B) Comienzan a aparecer los primeros dientes de leche y se aprende a caminar.",
+        "C) Se inicia por primera vez la producción de hormonas sexuales.",
+        "D) Disminuye aceleradamente la estatura y la masa ósea."
+      ],
+      correcta: 0
+    },
+    {
+      tema: "Etapas biológicas del desarrollo humano",
+      pregunta: "3. ¿Cuál es la secuencia cronológica correcta de las etapas de la vida humana?",
+      alternativas: [
+        "A) Niñez → Adultez → Adolescencia → Vejez",
+        "B) Adolescencia → Niñez → Vejez → Adultez",
+        "C) Niñez → Pubertad y Adolescencia → Adultez → Vejez",
+        "D) Pubertad → Niñez → Adultez → Vejez"
+      ],
+      correcta: 2
+    },
+
+    // Tema 2: Características sexuales primarias y secundarias
+    {
+      tema: "Características sexuales primarias y secundarias",
+      pregunta: "4. ¿Qué son las características sexuales primarias?",
+      alternativas: [
+        "A) Los cambios de voz y la aparición de acné en la adolescencia.",
+        "B) Los órganos reproductores internos y externos con los que nacemos.",
+        "C) El crecimiento de vello en las axilas y el pubis.",
+        "D) El aumento de estatura repentino alrededor de los 12 años."
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Características sexuales primarias y secundarias",
+      pregunta: "5. ¿Cuál de las siguientes opciones corresponde a una característica sexual secundaria femenina?",
+      alternativas: [
+        "A) Presencia de ovarios al nacer.",
+        "B) Ensanchamiento de las caderas y desarrollo de las glándulas mamarias.",
+        "C) Engrosamiento de las cuerdas vocales y voz más grave.",
+        "D) Aparición de vello abundante en el rostro (barba y bigote)."
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Características sexuales primarias y secundarias",
+      pregunta: "6. ¿Qué sustancias químicas del cuerpo provocan la aparición de las características sexuales secundarias?",
+      alternativas: [
+        "A) Las vitaminas y minerales de los alimentos.",
+        "B) Los glóbulos rojos de la sangre.",
+        "C) Las hormonas sexuales (estrógenos, progesterona y testosterona).",
+        "D) Las enzimas digestivas del estómago."
+      ],
+      correcta: 2
+    },
+
+    // Tema 3: Aparato genital femenino
+    {
+      tema: "Aparato genital femenino",
+      pregunta: "7. ¿Cuál es la función principal de los ovarios?",
+      alternativas: [
+        "A) Recibir al bebé durante todo el embarazo.",
+        "B) Producir los ovocitos (óvulos) y las hormonas sexuales femeninas.",
+        "C) Conectar el útero con el exterior del cuerpo.",
+        "D) Almacenar la orina antes de ser expulsada."
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Aparato genital femenino",
+      pregunta: "8. ¿En qué lugar del aparato reproductor femenino ocurre normalmente la fecundación (unión del ovocito y el espermatozoide)?",
+      alternativas: [
+        "A) En la vagina",
+        "B) En el cuello uterino",
+        "C) En las trompas de Falopio (oviductos)",
+        "D) En la vejiga"
+      ],
+      correcta: 2
+    },
+    {
+      tema: "Aparato genital femenino",
+      pregunta: "9. ¿Cómo se llama el órgano muscular hueco donde se implanta y desarrolla el embrión durante el embarazo?",
+      alternativas: [
+        "A) Útero",
+        "B) Ovario",
+        "C) Uretra",
+        "D) Vulva"
+      ],
+      correcta: 0
+    },
+
+    // Tema 4: Aparato genital masculino
+    {
+      tema: "Aparato genital masculino",
+      pregunta: "10. ¿Qué órganos del aparato genital masculino producen los espermatozoides y la testosterona?",
+      alternativas: [
+        "A) Las vesículas seminales",
+        "B) La próstata",
+        "C) Los testículos",
+        "D) Los conductos deferentes"
+Usa el código con precaución.
+],
+correcta: 2
+},
+{
+tema: "Aparato genital masculino",
+pregunta: "11. ¿Cuál es la función de las vesículas seminales y la próstata?",
+alternativas: [
+"A) Producir líquidos que nutren y facilitan el transporte de los espermatozoides formando el semen.",
+"B) Fabricar los espermatozoides desde la infancia.",
+"C) Filtrar la sangre para formar la orina.",
+"D) Regular la temperatura corporal de todo el cuerpo."
+],
+correcta: 0
+},
+{
+tema: "Aparato genital masculino",
+pregunta: "12. ¿Qué conducto recorre el interior del pene y permite la salida del semen y de la orina hacia el exterior?",
+alternativas: [
+"A) El epidídimo",
+"B) La uretra",
+"C) El oviducto",
+"D) El uréter"
+],
+correcta: 1
+},
+// Tema 5: Gametos sexuales
+{
+tema: "Gametos sexuales",
+pregunta: "13. ¿Cómo se llaman las células sexuales (gametos) masculina y femenina?",
+alternativas: [
+"A) Testículo y ovario",
+"B) Espermatozoide y ovocito",
+"C) Testosterona y estrógeno",
+"D) Neurona y glóbulo blanco"
+],
+correcta: 1
+},
+{
+tema: "Gametos sexuales",
+pregunta: "14. ¿Qué diferencia física existe entre un ovocito y un espermatozoide?",
+alternativas: [
+"A) El ovocito tiene una cola larga para nadar y el espermatozoide es gigante y redondo.",
+"B) Ambos tienen exactamente el mismo tamaño y forma.",
+"C) El ovocito es grande, esférico y sin movimiento propio; el espermatozoide es pequeño y tiene flagelo (cola) para moverse.",
+"D) El espermatozoide contiene nutrientes para el embarazo y el ovocito no."
+],
+correcta: 2
+},
+{
+tema: "Gametos sexuales",
+pregunta: "15. ¿Qué se forma cuando un espermatozoide logra fecundar a un ovocito?",
+alternativas: [
+"A) Una hormona",
+"B) Un cigoto (primera célula del nuevo ser vivo)",
+"C) Un ovario",
+"D) Una vesícula seminal"
+],
+correcta: 1
+}
+];
+function renderizarPreguntas() {
+const contenedor = document.getElementById("questionsList");
+contenedor.innerHTML = "";
+bancoPreguntas.forEach((item, index) => {
+const card = document.createElement("div");
+card.className = "question-card";
+let alternativasHTML = "";
+item.alternativas.forEach((alt, altIndex) => {
+alternativasHTML += `
+`;
+});
+card.innerHTML = <span class="topic-badge">${item.tema}</span> <div class="question-text">${item.pregunta}</div> ${alternativasHTML};
+contenedor.appendChild(card);
+});
+}
+function calcularNota(puntaje, total) {
+// Escala chilena: 1.0 a 7.0 con 60% de exigencia
+const exigencia = 0.60;
+const puntajeAprobacion = total * exigencia;
+let nota = 1.0;
+if (puntaje < puntajeAprobacion) {
+nota = 1.0 + 3.0 * (puntaje / puntajeAprobacion);
+} else {
+nota = 4.0 + 3.0 * ((puntaje - puntajeAprobacion) / (total - puntajeAprobacion));
+}
+return nota.toFixed(1);
+}
+function terminarPrueba() {
+const total = bancoPreguntas.length;
+// Verificar que todas las preguntas estén respondidas
+for (let i = 0; i < total; i++) {
+const marcada = document.querySelector(input[name="q_${i}"]:checked);
+if (!marcada) {
+alert(Te falta responder la pregunta ${i + 1}. Por favor, selecciona una alternativa antes de terminar.);
+return;
+}
+}
+let buenas = 0;
+let malas = 0;
+let revisionHTML = "";
+bancoPreguntas.forEach((item, index) => {
+const marcada = document.querySelector(input[name="q_${index}"]:checked);
+const seleccion = parseInt(marcada.value);
+const textoSeleccionado = item.alternativas[seleccion];
+const textoCorrecto = item.alternativas[item.correcta];
+if (seleccion === item.correcta) {
+buenas++;
+revisionHTML += <div class="review-item review-correct"> <strong>✅ Pregunta ${index + 1}: ¡Correcta!</strong><br> <em>${item.pregunta}</em><br> Tu respuesta: <strong>${textoSeleccionado}</strong> </div>;
+} else {
+malas++;
+revisionHTML += <div class="review-item review-incorrect"> <strong>❌ Pregunta ${index + 1}: Incorrecta</strong><br> <em>${item.pregunta}</em><br> Tu respuesta: ${textoSeleccionado}<br> 👉 <strong>Respuesta correcta: ${textoCorrecto}</strong> </div>;
+}
+});
+const nombre = document.getElementById("studentName").value.trim() || "Estudiante";
+const notaFinal = calcularNota(buenas, total);
+document.getElementById("summaryCard").innerHTML = <h2>Resultados de ${nombre}</h2> <p>Has completado las ${total} preguntas de la evaluación.</p> <div class="stats-grid"> <div class="stat-box stat-good">✅ Buenas: ${buenas}</div> <div class="stat-box stat-bad">❌ Malas: ${malas}</div> <div class="stat-box stat-grade">📊 Nota: ${notaFinal}</div> </div>;
+document.getElementById("reviewContainer").innerHTML = revisionHTML;
+document.getElementById("resultsSection").style.display = "block";
+document.getElementById("btnFinish").style.display = "none";
+document.getElementById("btnRetry").style.display = "block";
+// Bloquear opciones para que no se cambien después de terminar
+document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+document.getElementById("studentName").disabled = true;
+document.getElementById("resultsSection").scrollIntoView({ behavior: "smooth" });
+}
+function reiniciarPrueba() {
+document.getElementById("resultsSection").style.display = "none";
+document.getElementById("btnFinish").style.display = "block";
+document.getElementById("btnRetry").style.display = "none";
+document.getElementById("studentName").disabled = false;
+renderizarPreguntas();
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+// Cargar preguntas al iniciar
+renderizarPreguntas();
+
+<FollowUp>
+Si necesitas que agregue **imágenes o esquemas** de los sistemas reproductores dentro de las preguntas, o que cambie la **escala de calificación** (por ejemplo, a porcentaje o puntaje), dime y lo ajusto.
+</FollowUp>
