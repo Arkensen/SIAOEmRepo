@@ -1,4 +1,3 @@
-HTML
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -225,7 +224,6 @@ HTML
 
 <script>
   const bancoPreguntas = [
-    // Tema 1: Etapas biológicas del desarrollo humano
     {
       tema: "Etapas biológicas del desarrollo humano",
       pregunta: "1. ¿En qué etapa del desarrollo humano ocurren los cambios físicos que preparan al cuerpo para poder tener hijos?",
@@ -259,8 +257,6 @@ HTML
       ],
       correcta: 2
     },
-
-    // Tema 2: Características sexuales primarias y secundarias
     {
       tema: "Características sexuales primarias y secundarias",
       pregunta: "4. ¿Qué son las características sexuales primarias?",
@@ -294,8 +290,6 @@ HTML
       ],
       correcta: 2
     },
-
-    // Tema 3: Aparato genital femenino
     {
       tema: "Aparato genital femenino",
       pregunta: "7. ¿Cuál es la función principal de los ovarios?",
@@ -329,8 +323,6 @@ HTML
       ],
       correcta: 0
     },
-
-    // Tema 4: Aparato genital masculino
     {
       tema: "Aparato genital masculino",
       pregunta: "10. ¿Qué órganos del aparato genital masculino producen los espermatozoides y la testosterona?",
@@ -339,140 +331,187 @@ HTML
         "B) La próstata",
         "C) Los testículos",
         "D) Los conductos deferentes"
-Usa el código con precaución.
-],
-correcta: 2
-},
-{
-tema: "Aparato genital masculino",
-pregunta: "11. ¿Cuál es la función de las vesículas seminales y la próstata?",
-alternativas: [
-"A) Producir líquidos que nutren y facilitan el transporte de los espermatozoides formando el semen.",
-"B) Fabricar los espermatozoides desde la infancia.",
-"C) Filtrar la sangre para formar la orina.",
-"D) Regular la temperatura corporal de todo el cuerpo."
-],
-correcta: 0
-},
-{
-tema: "Aparato genital masculino",
-pregunta: "12. ¿Qué conducto recorre el interior del pene y permite la salida del semen y de la orina hacia el exterior?",
-alternativas: [
-"A) El epidídimo",
-"B) La uretra",
-"C) El oviducto",
-"D) El uréter"
-],
-correcta: 1
-},
-// Tema 5: Gametos sexuales
-{
-tema: "Gametos sexuales",
-pregunta: "13. ¿Cómo se llaman las células sexuales (gametos) masculina y femenina?",
-alternativas: [
-"A) Testículo y ovario",
-"B) Espermatozoide y ovocito",
-"C) Testosterona y estrógeno",
-"D) Neurona y glóbulo blanco"
-],
-correcta: 1
-},
-{
-tema: "Gametos sexuales",
-pregunta: "14. ¿Qué diferencia física existe entre un ovocito y un espermatozoide?",
-alternativas: [
-"A) El ovocito tiene una cola larga para nadar y el espermatozoide es gigante y redondo.",
-"B) Ambos tienen exactamente el mismo tamaño y forma.",
-"C) El ovocito es grande, esférico y sin movimiento propio; el espermatozoide es pequeño y tiene flagelo (cola) para moverse.",
-"D) El espermatozoide contiene nutrientes para el embarazo y el ovocito no."
-],
-correcta: 2
-},
-{
-tema: "Gametos sexuales",
-pregunta: "15. ¿Qué se forma cuando un espermatozoide logra fecundar a un ovocito?",
-alternativas: [
-"A) Una hormona",
-"B) Un cigoto (primera célula del nuevo ser vivo)",
-"C) Un ovario",
-"D) Una vesícula seminal"
-],
-correcta: 1
-}
-];
-function renderizarPreguntas() {
-const contenedor = document.getElementById("questionsList");
-contenedor.innerHTML = "";
-bancoPreguntas.forEach((item, index) => {
-const card = document.createElement("div");
-card.className = "question-card";
-let alternativasHTML = "";
-item.alternativas.forEach((alt, altIndex) => {
-alternativasHTML += `
-`;
-});
-card.innerHTML = <span class="topic-badge">${item.tema}</span> <div class="question-text">${item.pregunta}</div> ${alternativasHTML};
-contenedor.appendChild(card);
-});
-}
-function calcularNota(puntaje, total) {
-// Escala chilena: 1.0 a 7.0 con 60% de exigencia
-const exigencia = 0.60;
-const puntajeAprobacion = total * exigencia;
-let nota = 1.0;
-if (puntaje < puntajeAprobacion) {
-nota = 1.0 + 3.0 * (puntaje / puntajeAprobacion);
-} else {
-nota = 4.0 + 3.0 * ((puntaje - puntajeAprobacion) / (total - puntajeAprobacion));
-}
-return nota.toFixed(1);
-}
-function terminarPrueba() {
-const total = bancoPreguntas.length;
-// Verificar que todas las preguntas estén respondidas
-for (let i = 0; i < total; i++) {
-const marcada = document.querySelector(input[name="q_${i}"]:checked);
-if (!marcada) {
-alert(Te falta responder la pregunta ${i + 1}. Por favor, selecciona una alternativa antes de terminar.);
-return;
-}
-}
-let buenas = 0;
-let malas = 0;
-let revisionHTML = "";
-bancoPreguntas.forEach((item, index) => {
-const marcada = document.querySelector(input[name="q_${index}"]:checked);
-const seleccion = parseInt(marcada.value);
-const textoSeleccionado = item.alternativas[seleccion];
-const textoCorrecto = item.alternativas[item.correcta];
-if (seleccion === item.correcta) {
-buenas++;
-revisionHTML += <div class="review-item review-correct"> <strong>✅ Pregunta ${index + 1}: ¡Correcta!</strong><br> <em>${item.pregunta}</em><br> Tu respuesta: <strong>${textoSeleccionado}</strong> </div>;
-} else {
-malas++;
-revisionHTML += <div class="review-item review-incorrect"> <strong>❌ Pregunta ${index + 1}: Incorrecta</strong><br> <em>${item.pregunta}</em><br> Tu respuesta: ${textoSeleccionado}<br> 👉 <strong>Respuesta correcta: ${textoCorrecto}</strong> </div>;
-}
-});
-const nombre = document.getElementById("studentName").value.trim() || "Estudiante";
-const notaFinal = calcularNota(buenas, total);
-document.getElementById("summaryCard").innerHTML = <h2>Resultados de ${nombre}</h2> <p>Has completado las ${total} preguntas de la evaluación.</p> <div class="stats-grid"> <div class="stat-box stat-good">✅ Buenas: ${buenas}</div> <div class="stat-box stat-bad">❌ Malas: ${malas}</div> <div class="stat-box stat-grade">📊 Nota: ${notaFinal}</div> </div>;
-document.getElementById("reviewContainer").innerHTML = revisionHTML;
-document.getElementById("resultsSection").style.display = "block";
-document.getElementById("btnFinish").style.display = "none";
-document.getElementById("btnRetry").style.display = "block";
-// Bloquear opciones para que no se cambien después de terminar
-document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
-document.getElementById("studentName").disabled = true;
-document.getElementById("resultsSection").scrollIntoView({ behavior: "smooth" });
-}
-function reiniciarPrueba() {
-document.getElementById("resultsSection").style.display = "none";
-document.getElementById("btnFinish").style.display = "block";
-document.getElementById("btnRetry").style.display = "none";
-document.getElementById("studentName").disabled = false;
-renderizarPreguntas();
-window.scrollTo({ top: 0, behavior: "smooth" });
-}
-// Cargar preguntas al iniciar
-renderizarPreguntas();
+      ],
+      correcta: 2
+    },
+    {
+      tema: "Aparato genital masculino",
+      pregunta: "11. ¿Cuál es la función de las vesículas seminales y la próstata?",
+      alternativas: [
+        "A) Producir líquidos que nutren y facilitan el transporte de los espermatozoides formando el semen.",
+        "B) Fabricar los espermatozoides desde la infancia.",
+        "C) Filtrar la sangre para formar la orina.",
+        "D) Regular la temperatura corporal de todo el cuerpo."
+      ],
+      correcta: 0
+    },
+    {
+      tema: "Aparato genital masculino",
+      pregunta: "12. ¿Qué conducto recorre el interior del pene y permite la salida del semen y de la orina hacia el exterior?",
+      alternativas: [
+        "A) El epidídimo",
+        "B) La uretra",
+        "C) El oviducto",
+        "D) El uréter"
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Gametos sexuales",
+      pregunta: "13. ¿Cómo se llaman las células sexuales (gametos) masculina y femenina?",
+      alternativas: [
+        "A) Testículo y ovario",
+        "B) Espermatozoide y ovocito",
+        "C) Testosterona y estrógeno",
+        "D) Neurona y glóbulo blanco"
+      ],
+      correcta: 1
+    },
+    {
+      tema: "Gametos sexuales",
+      pregunta: "14. ¿Qué diferencia física existe entre un ovocito y un espermatozoide?",
+      alternativas: [
+        "A) El ovocito tiene una cola larga para nadar y el espermatozoide es gigante y redondo.",
+        "B) Ambos tienen exactamente el mismo tamaño y forma.",
+        "C) El ovocito es grande, esférico y sin movimiento propio; el espermatozoide es pequeño y tiene flagelo (cola) para moverse.",
+        "D) El espermatozoide contiene nutrientes para el embarazo y el ovocito no."
+      ],
+      correcta: 2
+    },
+    {
+      tema: "Gametos sexuales",
+      pregunta: "15. ¿Qué se forma cuando un espermatozoide logra fecundar a un ovocito?",
+      alternativas: [
+        "A) Una hormona",
+        "B) Un cigoto (primera célula del nuevo ser vivo)",
+        "C) Un ovario",
+        "D) Una vesícula seminal"
+      ],
+      correcta: 1
+    }
+  ];
 
+  function renderizarPreguntas() {
+    const contenedor = document.getElementById("questionsList");
+    contenedor.innerHTML = "";
+
+    bancoPreguntas.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "question-card";
+
+      let alternativasHTML = "";
+      item.alternativas.forEach((alt, altIndex) => {
+        alternativasHTML += `
+          <label class="option-item">
+            <input type="radio" name="q_${index}" value="${altIndex}">
+            <span>${alt}</span>
+          </label>
+        `;
+      });
+
+      card.innerHTML = `
+        <span class="topic-badge">${item.tema}</span>
+        <div class="question-text">${item.pregunta}</div>
+        ${alternativasHTML}
+      `;
+
+      contenedor.appendChild(card);
+    });
+  }
+
+  function calcularNota(puntaje, total) {
+    const exigencia = 0.60;
+    const puntajeAprobacion = total * exigencia;
+    let nota = 1.0;
+
+    if (puntaje < puntajeAprobacion) {
+      nota = 1.0 + 3.0 * (puntaje / puntajeAprobacion);
+    } else {
+      nota = 4.0 + 3.0 * ((puntaje - puntajeAprobacion) / (total - puntajeAprobacion));
+    }
+
+    return nota.toFixed(1);
+  }
+
+  function terminarPrueba() {
+    const total = bancoPreguntas.length;
+
+    for (let i = 0; i < total; i++) {
+      const marcada = document.querySelector(`input[name="q_${i}"]:checked`);
+      if (!marcada) {
+        alert(`Te falta responder la pregunta ${i + 1}. Por favor, selecciona una alternativa antes de terminar.`);
+        return;
+      }
+    }
+
+    let buenas = 0;
+    let malas = 0;
+    let revisionHTML = "";
+
+    bancoPreguntas.forEach((item, index) => {
+      const marcada = document.querySelector(`input[name="q_${index}"]:checked`);
+      const seleccion = parseInt(marcada.value, 10);
+      const textoSeleccionado = item.alternativas[seleccion];
+      const textoCorrecto = item.alternativas[item.correcta];
+
+      if (seleccion === item.correcta) {
+        buenas++;
+        revisionHTML += `
+          <div class="review-item review-correct">
+            <strong>✅ Pregunta ${index + 1}: ¡Correcta!</strong><br>
+            <em>${item.pregunta}</em><br>
+            Tu respuesta: <strong>${textoSeleccionado}</strong><br>
+            Respuesta correcta: <strong>${textoCorrecto}</strong>
+          </div>
+        `;
+      } else {
+        malas++;
+        revisionHTML += `
+          <div class="review-item review-incorrect">
+            <strong>❌ Pregunta ${index + 1}: Incorrecta</strong><br>
+            <em>${item.pregunta}</em><br>
+            Tu respuesta: ${textoSeleccionado}<br>
+            👉 Respuesta correcta: <strong>${textoCorrecto}</strong>
+          </div>
+        `;
+      }
+    });
+
+    const nombre = document.getElementById("studentName").value.trim() || "Estudiante";
+    const notaFinal = calcularNota(buenas, total);
+
+    document.getElementById("summaryCard").innerHTML = `
+      <h2>Resultados de ${nombre}</h2>
+      <p>Has completado las ${total} preguntas de la evaluación.</p>
+      <div class="stats-grid">
+        <div class="stat-box stat-good">Buenas: ${buenas}</div>
+        <div class="stat-box stat-bad">Malas: ${malas}</div>
+        <div class="stat-box stat-grade">Nota final: ${notaFinal}</div>
+      </div>
+    `;
+
+    document.getElementById("reviewContainer").innerHTML = revisionHTML;
+    document.getElementById("resultsSection").style.display = "block";
+    document.getElementById("btnFinish").style.display = "none";
+    document.getElementById("btnRetry").style.display = "block";
+
+    document.querySelectorAll('input[type="radio"]').forEach(radio => radio.disabled = true);
+    document.getElementById("studentName").disabled = true;
+    document.getElementById("resultsSection").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function reiniciarPrueba() {
+    document.getElementById("resultsSection").style.display = "none";
+    document.getElementById("btnFinish").style.display = "block";
+    document.getElementById("btnRetry").style.display = "none";
+    document.getElementById("studentName").disabled = false;
+    document.getElementById("studentName").value = "";
+    renderizarPreguntas();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  renderizarPreguntas();
+</script>
+
+</body>
+</html>
